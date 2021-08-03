@@ -13,8 +13,22 @@ function PlantPage() {
     .then(data => setPlantArray(data))
   }, [])
 
-  function onAddPlant(newPlant) {
+  function handleAddPlant(newPlant) {
     const updatedPlantArray = [...plantArray, newPlant]
+    setPlantArray(updatedPlantArray)
+  }
+
+  function handleDeletePlant(id) {
+    const updatedPlantArray = plantArray.filter((plant) => plant.id !== id);
+    setPlantArray(updatedPlantArray)
+  }
+
+  function handleUpdatePlant(updatedPlant) {
+    const updatedPlantArray = plantArray.map((plant) => {
+      if (plant.id === updatedPlant.id) {
+        return updatedPlant
+      } return plant;
+    })
     setPlantArray(updatedPlantArray)
   }
 
@@ -23,9 +37,9 @@ function PlantPage() {
 
   return (
     <main>
-      <NewPlantForm onAddPlant={onAddPlant} />
+      <NewPlantForm onAddPlant={handleAddPlant} />
       <Search setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
-      <PlantList plantArray={displayPlants} />
+      <PlantList plantArray={displayPlants} onDeletePlant={handleDeletePlant} onUpdatePlant={handleUpdatePlant} />
     </main>
   );
 }

@@ -1,14 +1,38 @@
 import React, { useState } from "react";
 
-function PlantCard( { plant } ) {
+function PlantCard( { plant, onDeletePlant, onUpdatePlant } ) {
+  const {name, image, price, id} = plant
 
   const [inStock, setInStock] = useState(true)
-
-  const {name, image, price} = plant
+  const [updatedPrice, setUpdatedPrice] = useState(price)
 
   function handleStock() {
     setInStock(!inStock)
   }
+
+  function handleDeleteClick() {
+    fetch(`http://localhost:6001/plants/${id}`, {
+      method: "DELETE",
+    });
+    onDeletePlant(id)
+  }
+ 
+  function handlePriceUpdateSubmit(e) {
+    e.preventDefault();
+    fetch(`http://localhost:6001/plants/${id}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ price: updatedPrice }),
+    })
+    .then(response => response.json())
+    .then((updatedPlant) => {
+      onUpdatePlant(updatedPlant)
+    })
+    .catch(error => console.log(error))
+  }
+
 
   return (
     <li className="card">
@@ -20,6 +44,11 @@ function PlantCard( { plant } ) {
       ) : (
         <button onClick={handleStock}>Out of Stock</button>
       )}
+      <button onClick={handleDeleteClick}>Delete</button>
+      <form onSubmit={handlePriceUpdateSubmit}>
+        <input type="number" step="0.01" placeholder="New price..." value={updatedPrice} onChange={(e) => setUpdatedPrice(parseFloat(e.target.value))} />
+        <button type="submit">Update Price</button>
+      </form>
     </li>
   );
 }
