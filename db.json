@@ -41,6 +41,18 @@
       "name": "Fiddle Leaf Fig",
       "image": "./images/fiddle-leaf-fig.jpg",
       "price": 55
+    },
+    {
+      "name": "AloeAloe",
+      "image": "./images/aloe.jpg",
+      "price": 10.99,
+      "id": 8
+    },
+    {
+      "name": "Jade two JadeBoogaloo",
+      "image": "./images/jade.jpg",
+      "price": 35.47,
+      "id": 9
     }
   ]
 }
